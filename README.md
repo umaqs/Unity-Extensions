@@ -14,3 +14,8 @@ Flow Layout Group is evolved version of Grid Layout Group for Unity UI. It allow
 5. Add as many elements as you want and apply same procedure to get desired size.
 
 
+**Finite State Machine**
+
+
+FSM in game development is a necessory paradigm and aids in development and implementation of a lot of behaviours including animation system, AI, MenuManager, SoundManager, Game Manager and more.
+This specific implementation uses Unity3D's call back methods to implement states and their transitions. It contains two scripts `State.cs` and `StateImplementer.cs`. Any Script which requiers FSM behaviour, can implement `StateImplementer` class.
