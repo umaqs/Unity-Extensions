@@ -1,6 +1,6 @@
 **FlowLayoutGroup**
 
-Flow Layout Group is evolved version of Grid Layout Group for Unity UI. It allows to build Tag like element group. Follow the Question on StackOverflow : http://stackoverflow.com/questions/38336835/correct-flowlayoutgroup-in-unity3d-as-per-horizontallayoutgroup-etc/38479097#38479097
+Flow Layout Group is evolved version of Grid Layout Group for Unity UI. It allows to build Tag like element group. Follow the question on StackOverflow : http://stackoverflow.com/questions/38336835/correct-flowlayoutgroup-in-unity3d-as-per-horizontallayoutgroup-etc/38479097#38479097
 
 **How to Use**
 
