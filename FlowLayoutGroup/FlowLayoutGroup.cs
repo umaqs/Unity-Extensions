@@ -14,6 +14,9 @@ public class FlowLayoutGroup : LayoutGroup
 	[SerializeField] protected Vector2 m_Spacing = Vector2.zero;
 	public Vector2 spacing { get { return m_Spacing; } set { SetProperty(ref m_Spacing, value); } }
 
+	
+	[SerializeField] protected bool m_Horizontal = true;
+	public bool horizontal { get { return m_Horizontal; } set { SetProperty(ref m_Horizontal, value); } }
 
 	protected FlowLayoutGroup()
 	{}
@@ -58,12 +61,12 @@ public class FlowLayoutGroup : LayoutGroup
 
 	public override void SetLayoutHorizontal()
 	{
-		SetCellsAlongAxis(0);
+		SetCellsAlongAxis();
 	}
 
 	public override void SetLayoutVertical()
 	{
-		SetCellsAlongAxis(1);
+		SetCellsAlongAxis();
 	}
 
 
@@ -74,10 +77,9 @@ public class FlowLayoutGroup : LayoutGroup
 	float totalWidth = 0; 
 	float totalHeight = 0;
 
-	float lastMaxHeight = 0;
+	float lastMax = 0;
 
-	private void SetCellsAlongAxis(int axis)
-	{
+	private void SetCellsAlongAxis(){
 		// Normally a Layout Controller should only set horizontal values when invoked for the horizontal axis
 		// and only vertical values when invoked for the vertical axis.
 		// However, in this case we set both the horizontal and vertical position when invoked for the vertical axis.
@@ -117,27 +119,37 @@ public class FlowLayoutGroup : LayoutGroup
 		totalWidth = 0;
 		totalHeight = 0;
 		Vector2 currentSpacing = Vector2.zero;
-		for (int i = 0; i < rectChildren.Count; i++)
-		{
+		for (int i = 0; i < rectChildren.Count; i++){
 			SetChildAlongAxis(rectChildren[i], 0, startOffset.x + totalWidth /*+ currentSpacing[0]*/, rectChildren[i].rect.size.x);
 			SetChildAlongAxis(rectChildren[i], 1, startOffset.y + totalHeight  /*+ currentSpacing[1]*/, rectChildren[i].rect.size.y);
 
 			currentSpacing = spacing;
 
-			totalWidth += rectChildren[i].rect.width + currentSpacing[0];
+			if(horizontal){
+				totalWidth += rectChildren[i].rect.width + currentSpacing[0];
+				if (rectChildren[i].rect.height > lastMax){
+					lastMax = rectChildren[i].rect.height;
+				}
 
-			if (rectChildren[i].rect.height > lastMaxHeight)
-			{
-				lastMaxHeight = rectChildren[i].rect.height;
-			}
+				if (i < rectChildren.Count-1){
+					if (totalWidth + rectChildren[i+1].rect.width + currentSpacing[0] > width -padding.horizontal ){
+						totalWidth = 0;
+						totalHeight += lastMax + currentSpacing[1];
+						lastMax = 0;
+					}
+				}
+			}else{
+				totalHeight += rectChildren[i].rect.height + currentSpacing[1];
+				if (rectChildren[i].rect.width > lastMax){
+					lastMax = rectChildren[i].rect.width;
+				}
 
-			if (i<rectChildren.Count-1)
-			{
-				if (totalWidth + rectChildren[i+1].rect.width + currentSpacing[0] > width )
-				{
-					totalWidth = 0;
-					totalHeight += lastMaxHeight + currentSpacing[1];
-					lastMaxHeight = 0;
+				if (i < rectChildren.Count-1){
+					if (totalHeight + rectChildren[i+1].rect.height + currentSpacing[1] > height - padding.vertical){
+						totalHeight = 0;
+						totalWidth += lastMax + currentSpacing[0];
+						lastMax = 0;
+					}
 				}
 			}
 		}
